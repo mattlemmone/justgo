@@ -72,7 +72,9 @@ func searchFromNode(start *trieNode, targets []string) []string {
     if childNode, exists := node.childrenByPrefix[word]; exists {
       path.WriteString(word)
       node = childNode
-    } 
+    } else {
+      return []string{}
+    }
   }   
 
   fmt.Printf("begin %s\n", path.String())
