@@ -40,6 +40,8 @@ func TestTrieInsertAndSearchFromFirstLevel(t *testing.T) {
 func TestTrieInsertAndSearchFromFourthLevel(t *testing.T) {
     trie := New()
 
+    trie.Insert([]string{"1"})
+    trie.Insert([]string{"1", "2"})
     trie.Insert([]string{"1", "2", "3"})
     trie.Insert([]string{"1", "2", "3", "4"})
     trie.Insert([]string{"1", "2", "3", "4", "5", "6", "7"})
