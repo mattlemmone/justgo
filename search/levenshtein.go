@@ -1,7 +1,7 @@
 package search
 
 
-func levenshteinDistance(s1 string, s2 string) byte {
+func levenshteinDistance(s1 string, s2 string) float64 {
   n := len(s1) 
   m := len(s2)
     
@@ -35,6 +35,8 @@ func levenshteinDistance(s1 string, s2 string) byte {
     }
   }
 
-  return matrix[n][m]
+  edits := matrix[n][m]
+
+  return 1.0 / float64(edits)
 }
 

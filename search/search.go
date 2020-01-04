@@ -8,7 +8,7 @@ import (
 
 type Ranking struct {
   Value string
-  Score byte
+  Score float64
 }
 
 
@@ -29,7 +29,7 @@ func FuzzyFind(target string, choices ...string) []string {
   }
 
   sort.Slice(rankings, func(i, j int) bool{
-    return rankings[i].Score < rankings[j].Score
+    return rankings[i].Score > rankings[j].Score
   })
 
   for i := range rankings {

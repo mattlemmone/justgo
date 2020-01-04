@@ -6,17 +6,17 @@ import (
 )
 
 
-func TestTrivialCase(t *testing.T) {
-    actualDistance := levenshteinDistance("cat", "hat") 
-    expectedDistance := byte(1)
+func TestLevenshteinSimilar(t *testing.T) {
+    actual := levenshteinDistance("cat", "hat") 
+    expected := 1.0
 
-    assert.Equal(t, expectedDistance, actualDistance)
+    assert.Equal(t, expected, actual)
 }
 
 
 func TestNonTrivialCase(t *testing.T) {
-    actualDistance := levenshteinDistance("magical", "man, radical!") 
-    expectedDistance := byte(7)
+    actual := levenshteinDistance("magical", "man, radical!") 
+    expected := 0.14285714285714285
 
-    assert.Equal(t, expectedDistance, actualDistance)
+    assert.Equal(t, expected, actual)
 }
