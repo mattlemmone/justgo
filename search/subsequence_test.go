@@ -31,11 +31,35 @@ func TestInvalidSubsequenceSimple(t *testing.T) {
 }
 
 func TestInvalidSubsequenceRearranged(t *testing.T) {
-    // actual := subsequence("cat", "tact") 
-    actual := subsequence(
-      "n",
-      "/home/matt/opt/ardour/gtk2_ardour/win32/msvc_resources.rc.in",
-    ) 
+    actual := subsequence("cat", "tact") 
 
     assert.False(t, actual)
+}
+
+func TestSubsequenceSimilaritySame(t *testing.T) {
+    actual := subsequenceSimilarity("cat", "cat") 
+    expected := 1.0
+
+    assert.Equal(t,  expected, actual)
+}
+
+func TestSubsequenceSimilarityGapWeight(t *testing.T) {
+    case1 := subsequenceSimilarity("disc", "discord") 
+    case2 := subsequenceSimilarity("diso", "discord") 
+
+    assert.Greater(t, case1, case2)
+}
+
+func TestSubsequenceSimilarityGapWeight2(t *testing.T) {
+    case1 := subsequenceSimilarity("diso", "discord") 
+    case2 := subsequenceSimilarity("dsrd", "discord") 
+
+    assert.Greater(t, case1, case2)
+}
+
+func TestSubsequenceSimilarityGreediness(t *testing.T) {
+    case1 := subsequenceSimilarity("disc", "discord") 
+    case2 := subsequenceSimilarity("isco", "discord") 
+
+    assert.Greater(t, case1, case2)
 }

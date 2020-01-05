@@ -18,7 +18,6 @@ func FuzzyFindFile(target string, filepaths []string) []string {
   var results []string
   
   loweredTarget := strings.ToLower(target)
-  // cache := map[string]float64{}
 
   for i := range filepaths {
     filepath := strings.ToLower(filepaths[i])
@@ -26,52 +25,19 @@ func FuzzyFindFile(target string, filepaths []string) []string {
 
     fileScore := 0.0
 
-    // for j := range dirs {
-    //   dir := dirs[j]
+    if subsequence(loweredTarget, filepath) {
+      fileScore += 1.0
 
-    //   // if subsequence(loweredTarget, dir) {
-    //   //   fmt.Printf("yay %s\n", dir)
-    //   //   fileScore += .1
-    //   // }
-
-    //   dirScore, exists := cache[dir]
-
-    //   if !exists {
-    //     if len(target) > 2 {
-    //       dirScore = levenshteinDistance(
-    //         loweredTarget,
-    //         strings.ToLower(dir),
-    //       )
-    //     } else {
-    //       dirScore = cosine(
-    //         loweredTarget,
-    //         strings.ToLower(dir),
-    //       )
-    //     }
-
-    //     cache[dir] = dirScore
-    //   }
-
-    //   fileScore += dirScore 
-    // }
-
-    // fileScore /= float64(len(dirs))
-
-    lastFile := dirs[len(dirs) - 1]
-
-    if lastFile  == loweredTarget {
-      fileScore += 1
-      fmt.Printf("%+v", fileScore)
+      // short path bonus
+      fileScore += float64(2.0) / float64(len(dirs))
     }
 
-    // if subsequence(loweredTarget, lastFile){
-    //   fileScore += .2
-    //   fmt.Printf("%+v", fileScore)
-    // }
+    lastFile := strings.ToLower(dirs[len(dirs) - 1])
 
-    // file.Path += fmt.Sprintf(" %s", fileScore)
+    fileScore += subsequenceSimilarity(loweredTarget, lastFile)
+
     ranking := Ranking{
-      Value: filepath,
+      Value: filepaths[i],
       Score: fileScore,
     }
 
