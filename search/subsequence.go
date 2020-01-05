@@ -2,10 +2,10 @@ package search
 
 const (
   // significance of matching subsequence at start
-  initialGapWeight       = float64(0.30)
+  initialGapWeight       = float64(0.20)
 
   // significance of having subsequence grouped closely together
-  contiguityWeight       = float64(0.45)
+  contiguityWeight       = float64(0.55)
 
   // significance of matching entire string
   sequenceCoverageWeight = float64(0.25)
