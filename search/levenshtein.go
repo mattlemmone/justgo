@@ -2,6 +2,10 @@ package search
 
 
 func levenshteinDistance(s1 string, s2 string) float64 {
+  if s1 == s2 {
+    return 1.0
+  }
+
   n := len(s1) 
   m := len(s2)
     

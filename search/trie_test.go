@@ -7,7 +7,7 @@ import (
 
 
 func TestTrieInsertAndSearchFromFirstLevel(t *testing.T) {
-    trie := New()
+    trie := NewTrie()
 
     trie.Insert([]string{
       "hello/",
@@ -25,7 +25,7 @@ func TestTrieInsertAndSearchFromFirstLevel(t *testing.T) {
     trie.Insert([]string{"hello/"})
     trie.Insert([]string{"world"})
     
-    actual := trie.Search("hello/")
+    actual := trie.PrefixSearch("hello")
     expected := []string{
       "hello/everyone/",
       "hello/everyone/as/well/as/the/world",
@@ -38,7 +38,7 @@ func TestTrieInsertAndSearchFromFirstLevel(t *testing.T) {
 
 
 func TestTrieInsertAndSearchFromFourthLevel(t *testing.T) {
-    trie := New()
+    trie := NewTrie()
 
     trie.Insert([]string{"1"})
     trie.Insert([]string{"1", "2"})
@@ -49,7 +49,7 @@ func TestTrieInsertAndSearchFromFourthLevel(t *testing.T) {
     trie.Insert([]string{"1", "2", "3", "4", "5", "66", "77", "88"})
     trie.Insert([]string{"1", "2", "3", "4", "5", "66", "777", "888"})
 
-    actual := trie.Search("1", "2", "3", "4")
+    actual := trie.PrefixSearch("1234")
     expected := []string{
       "1234",
       "1234567",

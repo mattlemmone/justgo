@@ -25,7 +25,7 @@ func  (t *trieNode) children() []*trieNode {
   return childNodes
 }
 
-func New() *Trie {
+func NewTrie() *Trie {
   trie := Trie{}
   trie.root = &trieNode{
     childrenByPrefix: map[string]*trieNode{},
@@ -56,26 +56,22 @@ func (t *Trie) Insert(words []string){
   node.end = true
 }
 
-func (t *Trie) Search(targets ...string) []string {
-  return searchFromNode(t.root, targets)
+func (t *Trie) Search(target string) []string {
+  return searchFromNode(t.root, target)
 }
 
-func searchFromNode(start *trieNode, targets []string) []string {
+func searchFromNode(start *trieNode, target string) []string {
   var path strings.Builder
 
   node := start
 
   // get node at end of prefix match
-  for i := range targets {
-    word := targets[i]
-
-    if childNode, exists := node.childrenByPrefix[word]; exists {
-      path.WriteString(word)
-      node = childNode
-    } else {
-      return []string{}
-    }
-  }   
+  if childNode, exists := node.childrenByPrefix[target]; exists {
+    path.WriteString(target)
+    node = childNode
+  } else {
+    return []string{}
+  }
 
   fmt.Printf("begin %s\n", path.String())
   return nodePathsToWords(node, &path)
