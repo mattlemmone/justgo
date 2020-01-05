@@ -6,9 +6,16 @@ import (
 )
 
 
-func TestLevenshteinSimilar(t *testing.T) {
-    actual := levenshteinDistance("cat", "hat") 
+func TestLevenshteinSame(t *testing.T) {
+    actual := levenshteinDistance("cat", "cat") 
     expected := 1.0
+
+    assert.Equal(t, expected, actual)
+}
+
+func TestLevenshteinSimple(t *testing.T) {
+    actual := levenshteinDistance("cat", "hat") 
+    expected := 1.0 / 3
 
     assert.Equal(t, expected, actual)
 }

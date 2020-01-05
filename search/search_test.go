@@ -1,46 +1,46 @@
 package search
 
-import (
-    "testing"
-    "github.com/stretchr/testify/assert"
-)
+// import (
+//     "testing"
+//     "github.com/stretchr/testify/assert"
+// )
 
 
-func TestFuzzyFind(t *testing.T) {
-    actualMatches := FuzzyFind(
-      "target",
-      "hey",
-      "target",
-      "ticket",
-      "targets",
-    )
+// func TestFuzzyFind(t *testing.T) {
+//     actualMatches := FuzzyFind(
+//       "target",
+//       "hey",
+//       "target",
+//       "ticket",
+//       "targets",
+//     )
 
-    expectedMatches := []string {
-      "target",
-      "targets",
-      "ticket",
-      "hey",
-    }
+//     expectedMatches := []string {
+//       "target",
+//       "targets",
+//       "ticket",
+//       "hey",
+//     }
 
-    assert.Equal(t, expectedMatches, actualMatches)
-}
+//     assert.Equal(t, expectedMatches, actualMatches)
+// }
 
-func TestFuzzyFindApplication(t *testing.T) {
-    actualMatches := FuzzyFind(
-      "Firefox",
-      "Thunderbird",
-      "Discord",
-      "Alacritty",
-    )
+// func TestFuzzyFindApplication(t *testing.T) {
+//     actualMatches := FuzzyFind(
+//       "Firefox",
+//       "Thunderbird",
+//       "Discord",
+//       "Alacritty",
+//     )
 
-    expectedMatches := []string {
-      "Discord",
-      "Alacritty",
-      "Thunderbird",
-    }
+//     expectedMatches := []string {
+//       "Discord",
+//       "Alacritty",
+//       "Thunderbird",
+//     }
 
-    assert.Equal(t, expectedMatches, actualMatches)
-}
+//     assert.Equal(t, expectedMatches, actualMatches)
+// }
 
 
 // func TestFuzzyFindPath(t *testing.T) {

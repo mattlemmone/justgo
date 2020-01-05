@@ -41,6 +41,6 @@ func levenshteinDistance(s1 string, s2 string) float64 {
 
   edits := matrix[n][m]
 
-  return 1.0 / float64(edits)
+  return float64(edits) / float64(max(n,m)) 
 }
 

@@ -4,7 +4,6 @@ import (
   "sort"
   "fmt"
   "strings"
-  "github.com/mattlemmone/popo/desktop"
 )
 
 
@@ -13,78 +12,66 @@ type Ranking struct {
   Score float64
 }
 
-type FileRanking struct {
-  File *desktop.File
-  Score float64
-}
 
-
-func FuzzyFind(target string, choices ...string) []string {
+func FuzzyFindFile(target string, filepaths []string) []string {
   var rankings []Ranking
-  var rankedChoices []string
-
-  loweredTarget := strings.ToLower(target)
-
-  for i := range choices {
-    score := levenshteinDistance(
-      loweredTarget,
-      strings.ToLower(choices[i]),
-    )
-
-    ranking := Ranking{Value: choices[i], Score: score}
-    rankings = append(rankings, ranking)
-  }
-
-  sort.Slice(rankings, func(i, j int) bool{
-    return rankings[i].Score > rankings[j].Score
-  })
-
-  for i := range rankings {
-    rankedChoices = append(rankedChoices, rankings[i].Value)
-  }
-
-  return rankedChoices
-}
-
-func FuzzyFindFile(target string, files []*desktop.File) []*desktop.File {
-  var rankings []FileRanking
-  var rankedChoices []*desktop.File
+  var results []string
   
   loweredTarget := strings.ToLower(target)
-  cache := map[string]float64{}
+  // cache := map[string]float64{}
 
-  for i := range files {
-    file := files[i]
-    dirs := strings.Split(file.Path, "/")[1:]
+  for i := range filepaths {
+    filepath := strings.ToLower(filepaths[i])
+    dirs := strings.Split(filepath, "/")[1:]
+
     fileScore := 0.0
 
-    for j := range dirs {
-      dir := dirs[j]
-      dirScore, exists := cache[dir]
-      
-      if !exists {
-        dirScore = levenshteinDistance(
-          loweredTarget,
-          strings.ToLower(dir),
-        )
+    // for j := range dirs {
+    //   dir := dirs[j]
 
-        fmt.Printf("score %s %+v\n", dir, dirScore)
-        cache[dir] = dirScore
-      }
-           
-      fileScore += dirScore 
-    }
+    //   // if subsequence(loweredTarget, dir) {
+    //   //   fmt.Printf("yay %s\n", dir)
+    //   //   fileScore += .1
+    //   // }
 
-    fileScore /= float64(len(dirs))
+    //   dirScore, exists := cache[dir]
 
-    if dirs[len(dirs) - 1] == loweredTarget {
+    //   if !exists {
+    //     if len(target) > 2 {
+    //       dirScore = levenshteinDistance(
+    //         loweredTarget,
+    //         strings.ToLower(dir),
+    //       )
+    //     } else {
+    //       dirScore = cosine(
+    //         loweredTarget,
+    //         strings.ToLower(dir),
+    //       )
+    //     }
+
+    //     cache[dir] = dirScore
+    //   }
+
+    //   fileScore += dirScore 
+    // }
+
+    // fileScore /= float64(len(dirs))
+
+    lastFile := dirs[len(dirs) - 1]
+
+    if lastFile  == loweredTarget {
       fileScore += 1
       fmt.Printf("%+v", fileScore)
     }
 
+    // if subsequence(loweredTarget, lastFile){
+    //   fileScore += .2
+    //   fmt.Printf("%+v", fileScore)
+    // }
+
     // file.Path += fmt.Sprintf(" %s", fileScore)
-    ranking := FileRanking{
-      File: file,
+    ranking := Ranking{
+      Value: filepath,
       Score: fileScore,
     }
 
@@ -96,8 +83,11 @@ func FuzzyFindFile(target string, files []*desktop.File) []*desktop.File {
   })
 
   for i := range rankings {
-    rankedChoices = append(rankedChoices, rankings[i].File)
+    results = append(
+      results,
+      fmt.Sprintf("%s (%v)", rankings[i].Value, rankings[i].Score),
+    )
   }
 
-  return rankedChoices
+  return results
 }
