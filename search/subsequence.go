@@ -1,11 +1,14 @@
 package search
 
-import "fmt"
-
 const (
-  initialGapWeight       = float64(0.45)
-  contiguityWeight       = float64(0.35)
-  sequenceCoverageWeight = float64(0.2)
+  // significance of matching subsequence at start
+  initialGapWeight       = float64(0.30)
+
+  // significance of having subsequence grouped closely together
+  contiguityWeight       = float64(0.45)
+
+  // significance of matching entire string
+  sequenceCoverageWeight = float64(0.25)
 )
 
 func subsequence(candidate string, text string) bool {
@@ -40,7 +43,6 @@ func subsequenceSimilarity(candidate string, text string) float64 {
         initialGap = i
       }
 
-      fmt.Printf("i - last: %v - %v\n", i, lastCandidate)
       gapLen += (i - lastCandidate - 1)
       lastCandidate = i 
       candidatePtr++
@@ -54,8 +56,6 @@ func subsequenceSimilarity(candidate string, text string) float64 {
   if initialGap != -1 {
     initialGapScore = 1 - float64(initialGap) / float64(len(text))
   }
-
-  fmt.Printf("%s in %s: cov %v, cont %v, gap %v\n", candidate, text, coverageScore, contiguityScore, initialGapScore)
 
   return coverageScore * sequenceCoverageWeight +
     contiguityScore * contiguityWeight +

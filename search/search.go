@@ -25,12 +25,12 @@ func FuzzyFindFile(target string, filepaths []string) []string {
 
     fileScore := 0.0
 
-    if subsequence(loweredTarget, filepath) {
-      fileScore += 1.0
-
-      // short path bonus
-      fileScore += float64(2.0) / float64(len(dirs))
+    if !subsequence(loweredTarget, filepath) {
+      continue
     }
+
+    // short path bonus
+    fileScore += float64(2.0) / float64(len(dirs))
 
     lastFile := strings.ToLower(dirs[len(dirs) - 1])
 
