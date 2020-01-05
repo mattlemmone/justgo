@@ -5,40 +5,33 @@ import (
   "math"
   "fmt"
   "strings"
+  "github.com/mattlemmone/popo/desktop"
 )
 
 
-type Ranking struct {
-  Value string
+type FileRanking struct {
+  File *desktop.File
   Score float64
 }
 
+const (
+  // lower number means longer directories will be penalized less
+  directoryBonusNumberator = 0.5
+)
 
-func FuzzyFindFile(target string, filepaths []string) []string {
-  var rankings []Ranking
+func FuzzyFindApplication(target string, applications []*desktop.File) []string {
+  var rankings []FileRanking
   var results []string
   
   loweredTarget := strings.ToLower(target)
 
-  for i := range filepaths {
-    filepath := strings.ToLower(filepaths[i])
-    dirs := strings.Split(filepath, "/")[1:]
+  for _, app := range applications {
+    name := strings.ToLower(app.Name)
+    score := subsequenceSimilarity(loweredTarget, name)
 
-    fileScore := 0.0
-
-    if !subsequence(loweredTarget, filepath) {
-      continue
-    }
-
-    // add bonus to prefer short paths
-    fileScore += 0.5 / math.Log(float64(len(dirs)))
-
-    lastFile := dirs[len(dirs) - 1]
-    fileScore += subsequenceSimilarity(loweredTarget, lastFile)
-
-    ranking := Ranking{
-      Value: filepaths[i],
-      Score: fileScore,
+    ranking := FileRanking{
+      File: app,
+      Score: score,
     }
 
     rankings = append(rankings, ranking)
@@ -51,7 +44,50 @@ func FuzzyFindFile(target string, filepaths []string) []string {
   for i := range rankings {
     results = append(
       results,
-      fmt.Sprintf("%s (%v)", rankings[i].Value, rankings[i].Score),
+      fmt.Sprintf("%s (%v)", rankings[i].File.Name, rankings[i].Score),
+    )
+  }
+
+  return results
+}
+
+func FuzzyFindFile(target string, files []*desktop.File) []string {
+  var rankings []FileRanking
+  var results []string
+  
+  loweredTarget := strings.ToLower(target)
+
+  for _, file := range files {
+    filepath := strings.ToLower(file.Path)
+
+    if !subsequence(loweredTarget, filepath) {
+      continue
+    }
+
+    dirs := strings.Split(filepath, "/")[1:]
+
+    // add bonus to prefer short paths
+    score := directoryBonusNumberator / math.Log(float64(len(dirs)))
+
+    lastFile := dirs[len(dirs) - 1]
+    score += subsequenceSimilarity(loweredTarget, lastFile)
+
+    ranking := FileRanking{
+      File: file,
+      Score: score,
+    }
+
+    rankings = append(rankings, ranking)
+  }
+
+  sort.Slice(rankings, func(i, j int) bool{
+    return rankings[i].Score > rankings[j].Score
+  })
+
+  for i := range rankings {
+    results = append(
+      results,
+      fmt.Sprintf("%s (%v)", rankings[i].File.Path, rankings[i].Score),
     )
   }
 

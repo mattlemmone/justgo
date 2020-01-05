@@ -14,21 +14,16 @@ func main(){
   environment := desktop.Linux{}
 
   println("Scanning...")
-  // apps := environment.DesktopApplications()
-  userFiles := environment.UserFiles()
-  // files := append(apps, userFiles...)
+  apps := environment.DesktopApplications()
+  // userFiles := environment.UserFiles()
 
   reader := bufio.NewReader(os.Stdin)
   
-  var seed []string
-  for i := range userFiles {
-   seed = append(seed, userFiles[i].Path) 
-  }
-
   for {
     fmt.Print("-> ")
     text, _ := reader.ReadString('\n')
-    result := search.FuzzyFindFile(text[:len(text)-1], seed)
+    // result := search.FuzzyFindFile(text[:len(text)-1], userFiles)
+    result := search.FuzzyFindApplication(text[:len(text)-1], apps)
 
     for i := range result[:20] {
       path := result[i]

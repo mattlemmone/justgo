@@ -70,3 +70,11 @@ func TestSubsequenceSimilarityShortText(t *testing.T) {
 
     assert.Less(t, case1, 1.0)
 }
+
+
+func TestSubsequenceSimilarityMostlySimilar(t *testing.T) {
+    case1 := subsequenceSimilarity("py3", "python3.7") 
+    case2 := subsequenceSimilarity("py3", "python2.6") 
+
+    assert.Greater(t, case1, case2)
+}

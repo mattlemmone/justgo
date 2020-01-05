@@ -1,11 +1,13 @@
 package search
 
+// import "fmt"
+
 const (
   // significance of matching subsequence at start
-  initialGapWeight       = float64(0.20)
+  initialGapWeight       = float64(0.15)
 
   // significance of having subsequence grouped closely together
-  contiguityWeight       = float64(0.45)
+  contiguityWeight       = float64(0.50)
 
   // significance of matching entire string
   sequenceCoverageWeight = float64(0.35)
@@ -49,6 +51,13 @@ func subsequenceSimilarity(candidate string, text string) float64 {
     }
   }
 
+  isCompleteSubsequence := candidatePtr == len(candidate)
+
+  // unable to match entire string, so add unmatched part to the gap length
+  if !isCompleteSubsequence {
+    gapLen += len(text) - candidatePtr
+  }
+
   maxLen := float64(max(len(candidate), len(text)))
   coverageScore := float64(candidatePtr) / maxLen
   contiguityScore := 1 - float64(gapLen) / maxLen
@@ -57,6 +66,16 @@ func subsequenceSimilarity(candidate string, text string) float64 {
   if initialGap != -1 {
     initialGapScore = 1 - float64(initialGap) / maxLen
   }
+
+  // fmt.Printf(
+  //   "%s in %s: cov %v, cont %v, gap %v (gap len %v)\n",
+  //   candidate,
+  //   text,
+  //   coverageScore,
+  //   contiguityScore,
+  //   initialGapScore,
+  //   gapLen,
+  // )
 
   return coverageScore * sequenceCoverageWeight +
     contiguityScore * contiguityWeight +
