@@ -75,15 +75,14 @@ func FuzzyFindFile(target string, files []*desktop.File) []*desktop.File {
       fileScore += dirScore 
     }
 
-    fileScore += float64(1.0 / len(dirs))
+    fileScore /= float64(len(dirs))
 
     if dirs[len(dirs) - 1] == loweredTarget {
-      fmt.Println("BITCH")
-      fileScore += 3
+      fileScore += 1
       fmt.Printf("%+v", fileScore)
     }
 
-    file.Path += fmt.Sprintf(" %s", fileScore)
+    // file.Path += fmt.Sprintf(" %s", fileScore)
     ranking := FileRanking{
       File: file,
       Score: fileScore,
