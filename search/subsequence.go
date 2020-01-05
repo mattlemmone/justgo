@@ -5,10 +5,10 @@ const (
   initialGapWeight       = float64(0.20)
 
   // significance of having subsequence grouped closely together
-  contiguityWeight       = float64(0.55)
+  contiguityWeight       = float64(0.45)
 
   // significance of matching entire string
-  sequenceCoverageWeight = float64(0.25)
+  sequenceCoverageWeight = float64(0.35)
 )
 
 func subsequence(candidate string, text string) bool {
@@ -49,12 +49,13 @@ func subsequenceSimilarity(candidate string, text string) float64 {
     }
   }
 
-  coverageScore := float64(candidatePtr) / float64(len(text)) 
-  contiguityScore := 1 - float64(gapLen) / float64(len(text))
+  maxLen := float64(max(len(candidate), len(text)))
+  coverageScore := float64(candidatePtr) / maxLen
+  contiguityScore := 1 - float64(gapLen) / maxLen
   initialGapScore := 0.0
 
   if initialGap != -1 {
-    initialGapScore = 1 - float64(initialGap) / float64(len(text))
+    initialGapScore = 1 - float64(initialGap) / maxLen
   }
 
   return coverageScore * sequenceCoverageWeight +

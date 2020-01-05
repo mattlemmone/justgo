@@ -30,7 +30,7 @@ func main(){
     text, _ := reader.ReadString('\n')
     result := search.FuzzyFindFile(text[:len(text)-1], seed)
 
-    for i := range result[:10] {
+    for i := range result[:20] {
       path := result[i]
       println(path)
     }

@@ -63,3 +63,10 @@ func TestSubsequenceSimilarityGreediness(t *testing.T) {
 
     assert.Greater(t, case1, case2)
 }
+
+
+func TestSubsequenceSimilarityShortText(t *testing.T) {
+    case1 := subsequenceSimilarity("disco", "d") 
+
+    assert.Less(t, case1, 1.0)
+}

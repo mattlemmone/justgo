@@ -2,6 +2,7 @@ package search
 
 import (
   "sort"
+  "math"
   "fmt"
   "strings"
 )
@@ -29,11 +30,10 @@ func FuzzyFindFile(target string, filepaths []string) []string {
       continue
     }
 
-    // short path bonus
-    fileScore += float64(2.0) / float64(len(dirs))
+    // add bonus to prefer short paths
+    fileScore += 0.5 / math.Log(float64(len(dirs)))
 
-    lastFile := strings.ToLower(dirs[len(dirs) - 1])
-
+    lastFile := dirs[len(dirs) - 1]
     fileScore += subsequenceSimilarity(loweredTarget, lastFile)
 
     ranking := Ranking{
