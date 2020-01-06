@@ -91,6 +91,7 @@ func applicationFromDesktopFile(path string) *Application{
 
 	fileLines, _ := readFileLines(path)
 
+  fmt.Printf("app path: %s\n", path)
   for _, line := range fileLines {
     sepIdx := strings.Index(line, "=")
     
@@ -102,6 +103,8 @@ func applicationFromDesktopFile(path string) *Application{
     val := line[sepIdx+1:]
     params[key] = val
   }
+
+  fmt.Printf("app name: %s\n", params["Name"])
 
   return &Application{
     Name: params["Name"],

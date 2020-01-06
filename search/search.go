@@ -47,6 +47,7 @@ func FuzzyFindApplication(target string, applications []*desktop.Application) []
   })
 
   for i := range rankings {
+    fmt.Printf("%s (%v)\n", rankings[i].Application.Name, rankings[i].Score)
     results = append(results, rankings[i].Application)
   }
 
