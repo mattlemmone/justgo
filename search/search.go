@@ -9,6 +9,11 @@ import (
 )
 
 
+type ApplicationRanking struct {
+  Application *desktop.Application
+  Score float64
+}
+
 type FileRanking struct {
   File *desktop.File
   Score float64
@@ -16,12 +21,12 @@ type FileRanking struct {
 
 const (
   // lower number means longer directories will be penalized less
-  directoryBonusNumberator = 0.5
+  directoryBonusNumberator = 0.7
 )
 
-func FuzzyFindApplication(target string, applications []*desktop.File) []string {
-  var rankings []FileRanking
-  var results []string
+func FuzzyFindApplication(target string, applications []*desktop.Application) []*desktop.Application {
+  var rankings []ApplicationRanking
+  var results []*desktop.Application
   
   loweredTarget := strings.ToLower(target)
 
@@ -29,8 +34,8 @@ func FuzzyFindApplication(target string, applications []*desktop.File) []string 
     name := strings.ToLower(app.Name)
     score := subsequenceSimilarity(loweredTarget, name)
 
-    ranking := FileRanking{
-      File: app,
+    ranking := ApplicationRanking{
+      Application: app,
       Score: score,
     }
 
@@ -42,13 +47,19 @@ func FuzzyFindApplication(target string, applications []*desktop.File) []string 
   })
 
   for i := range rankings {
-    results = append(
-      results,
-      fmt.Sprintf("%s (%v)", rankings[i].File.Name, rankings[i].Score),
-    )
+    results = append(results, rankings[i].Application)
   }
 
   return results
+
+  // for i := range rankings {
+  //   results = append(
+  //     results,
+  //     fmt.Sprintf("%s (%v)", rankings[i].Application.Name, rankings[i].Score),
+  //   )
+  // }
+
+  // return results
 }
 
 func FuzzyFindFile(target string, files []*desktop.File) []string {

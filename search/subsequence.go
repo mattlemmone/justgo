@@ -4,10 +4,10 @@ package search
 
 const (
   // significance of matching subsequence at start
-  initialGapWeight       = float64(0.15)
+  initialGapWeight       = float64(0.05)
 
   // significance of having subsequence grouped closely together
-  contiguityWeight       = float64(0.50)
+  contiguityWeight       = float64(0.60)
 
   // significance of matching entire string
   sequenceCoverageWeight = float64(0.35)
@@ -35,6 +35,8 @@ func subsequenceSimilarity(candidate string, text string) float64 {
   lastCandidate := -1
   gapLen := 0
 
+
+  // a b c || b a x b c
   for i, char := range text {
     if candidatePtr >= len(candidate) {
       break

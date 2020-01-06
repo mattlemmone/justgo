@@ -9,27 +9,29 @@ import (
 )
 
 const (
-  MaxFileWalkDepth = 7
+  maxFileWalkDepth = 7
 )
+
 
 type Linux struct { }
 
-func (l *Linux) DesktopApplications() []*File {
-  var apps []*File
+func (l *Linux) DesktopApplications() []*Application {
+  var apps []*Application
 
-  appDir := "/usr/share/applications/"
-  filePattern := "*.desktop"
-  glob := fmt.Sprintf("%s%s", appDir, filePattern)
-  appPaths, _ := filepath.Glob(glob)
+  appDirs := []string{
+    "/usr/share/applications/",
+    "/var/lib/snapd/desktop/applications/",
+  }
 
-  for _, appPath := range appPaths {
-    app := File{
-      Type: ApplicationFileType,
-      Path: appPath,
-      Name: desktopApplicationNameFromPath(appPath),
-    }    
-    
-    apps = append(apps, &app)
+  for _, appDir := range appDirs {
+    filePattern := "*.desktop"
+    glob := fmt.Sprintf("%s%s", appDir, filePattern)
+    appPaths, _ := filepath.Glob(glob)
+
+    for _, appPath := range appPaths {
+      app := applicationFromDesktopFile(appPath)
+      apps = append(apps, app)
+    }
   }
 
   return apps
@@ -52,11 +54,9 @@ func (l *Linux) UserFiles() []*File {
 
       if isDotFile {
         if fileInfo.IsDir() {
-          // fmt.Printf("skipping: %s\n", fileInfo.Name())
           return filepath.SkipDir
         } 
-      } else if strings.Count(path, "/") > MaxFileWalkDepth {
-          // fmt.Printf("skipping long boy: %s\n", fileInfo.Name())
+      } else if strings.Count(path, "/") > maxFileWalkDepth {
           return filepath.SkipDir
       } else {
         file := File{
@@ -72,15 +72,6 @@ func (l *Linux) UserFiles() []*File {
     },
   )
 
-  // for _, appPath := range appPaths {
-  //   app := File{
-  //     Type: ApplicationFileType,
-  //     Path: appPath,
-  //     Name: desktopApplicationNameFromPath(appPath),
-  //   }    
-  //   fmt.Println(app)
-  // }
-
   return files
 }
 
@@ -94,3 +85,27 @@ func desktopApplicationNameFromPath(path string) string {
   return strings.TrimSuffix(appName, ".desktop")
 }
 
+
+func applicationFromDesktopFile(path string) *Application{
+  params := map[string]string{}
+
+	fileLines, _ := readFileLines(path)
+
+  for _, line := range fileLines {
+    sepIdx := strings.Index(line, "=")
+    
+    if sepIdx == -1 {
+      continue
+    }
+    
+    key := line[:sepIdx]
+    val := line[sepIdx+1:]
+    params[key] = val
+  }
+
+  return &Application{
+    Name: params["Name"],
+    IconPath: params["Icon"],
+    Exec: params["Exec"],
+  }
+}
