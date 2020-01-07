@@ -37,22 +37,9 @@ func main(){
     topResult := results[0]
 
     fmt.Printf("> %s\n", topResult.Exec)
-
-    // parsed := append([]string{"-c"}, topResult.Exec)
-    // cmd := exec.Command("bash", parsed...)
-    // out, err := cmd.Output()
-    // println(string(out))
-    // if err != nil {
-    //   panic(err)
-    // }
-
+    environment.LaunchApplication(topResult)
+    println("hey")
     break
-    // go cmd.Start()
-
-    // for i := range result[:min(10,len(result))] {
-    //   path := result[i]
-    //   println(path)
-    // }
   }
 }
 

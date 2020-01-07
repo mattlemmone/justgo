@@ -3,6 +3,7 @@ package desktop
 import (
   "fmt"
   "os"
+  "os/exec"
   "github.com/mitchellh/go-homedir"
   "strings"
   "path/filepath"
@@ -14,6 +15,23 @@ const (
 
 
 type Linux struct { }
+
+func (l *Linux) LaunchApplication(application *Application) {
+  // replace all occurences of %U (file input) so app launches with no params, and
+  // instead, with the -d(etached) flag
+  sanitized := strings.Replace(application.Exec, "%U", "-d", -1)
+  args := append([]string{"-c"}, sanitized)
+  cmd := exec.Command("bash", args...)
+  out, err := cmd.Output()
+
+  println(string(out))
+
+  if err != nil {
+    panic(err)
+  }
+
+  cmd.Start()
+}
 
 func (l *Linux) DesktopApplications() []*Application {
   var apps []*Application
