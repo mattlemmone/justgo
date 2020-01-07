@@ -1,107 +1,106 @@
 package search
 
 import (
-  "sort"
-  "math"
-  "fmt"
-  "strings"
-  "github.com/mattlemmone/popo/desktop"
+	"fmt"
+	"github.com/mattlemmone/popo/desktop"
+	"math"
+	"sort"
+	"strings"
 )
 
-
 type ApplicationRanking struct {
-  Application *desktop.Application
-  Score float64
+	Application *desktop.Application
+	Score       float64
 }
 
 type FileRanking struct {
-  File *desktop.File
-  Score float64
+	File  *desktop.File
+	Score float64
 }
 
 const (
-  // lower number means longer directories will be penalized less
-  directoryBonusNumberator = 0.7
+	// lower number means longer directories will be penalized less
+	directoryBonusNumberator = 0.7
 )
 
 func FuzzyFindApplication(target string, applications []*desktop.Application) []*desktop.Application {
-  var rankings []ApplicationRanking
-  var results []*desktop.Application
-  
-  loweredTarget := strings.ToLower(target)
+	var rankings []ApplicationRanking
+	var results []*desktop.Application
 
-  for _, app := range applications {
-    name := strings.ToLower(app.Name)
-    score := subsequenceSimilarity(loweredTarget, name)
+	loweredTarget := strings.ToLower(target)
 
-    ranking := ApplicationRanking{
-      Application: app,
-      Score: score,
-    }
+	for _, app := range applications {
+		name := strings.ToLower(app.Name)
+		score := subsequenceSimilarity(loweredTarget, name)
 
-    rankings = append(rankings, ranking)
-  }
+		ranking := ApplicationRanking{
+			Application: app,
+			Score:       score,
+		}
 
-  sort.Slice(rankings, func(i, j int) bool{
-    return rankings[i].Score > rankings[j].Score
-  })
+		rankings = append(rankings, ranking)
+	}
 
-  for i := range rankings {
-    fmt.Printf("%s (%v)\n", rankings[i].Application.Name, rankings[i].Score)
-    results = append(results, rankings[i].Application)
-  }
+	sort.Slice(rankings, func(i, j int) bool {
+		return rankings[i].Score > rankings[j].Score
+	})
 
-  return results
+	for i := range rankings {
+		fmt.Printf("%s (%v)\n", rankings[i].Application.Name, rankings[i].Score)
+		results = append(results, rankings[i].Application)
+	}
 
-  // for i := range rankings {
-  //   results = append(
-  //     results,
-  //     fmt.Sprintf("%s (%v)", rankings[i].Application.Name, rankings[i].Score),
-  //   )
-  // }
+	return results
 
-  // return results
+	// for i := range rankings {
+	//   results = append(
+	//     results,
+	//     fmt.Sprintf("%s (%v)", rankings[i].Application.Name, rankings[i].Score),
+	//   )
+	// }
+
+	// return results
 }
 
 func FuzzyFindFile(target string, files []*desktop.File) []string {
-  var rankings []FileRanking
-  var results []string
-  
-  loweredTarget := strings.ToLower(target)
+	var rankings []FileRanking
+	var results []string
 
-  for _, file := range files {
-    filepath := strings.ToLower(file.Path)
+	loweredTarget := strings.ToLower(target)
 
-    if !subsequence(loweredTarget, filepath) {
-      continue
-    }
+	for _, file := range files {
+		filepath := strings.ToLower(file.Path)
 
-    dirs := strings.Split(filepath, "/")[1:]
+		if !subsequence(loweredTarget, filepath) {
+			continue
+		}
 
-    // add bonus to prefer short paths
-    score := directoryBonusNumberator / math.Log(float64(len(dirs)))
+		dirs := strings.Split(filepath, "/")[1:]
 
-    lastFile := dirs[len(dirs) - 1]
-    score += subsequenceSimilarity(loweredTarget, lastFile)
+		// add bonus to prefer short paths
+		score := directoryBonusNumberator / math.Log(float64(len(dirs)))
 
-    ranking := FileRanking{
-      File: file,
-      Score: score,
-    }
+		lastFile := dirs[len(dirs)-1]
+		score += subsequenceSimilarity(loweredTarget, lastFile)
 
-    rankings = append(rankings, ranking)
-  }
+		ranking := FileRanking{
+			File:  file,
+			Score: score,
+		}
 
-  sort.Slice(rankings, func(i, j int) bool{
-    return rankings[i].Score > rankings[j].Score
-  })
+		rankings = append(rankings, ranking)
+	}
 
-  for i := range rankings {
-    results = append(
-      results,
-      fmt.Sprintf("%s (%v)", rankings[i].File.Path, rankings[i].Score),
-    )
-  }
+	sort.Slice(rankings, func(i, j int) bool {
+		return rankings[i].Score > rankings[j].Score
+	})
 
-  return results
+	for i := range rankings {
+		results = append(
+			results,
+			fmt.Sprintf("%s (%v)", rankings[i].File.Path, rankings[i].Score),
+		)
+	}
+
+	return results
 }

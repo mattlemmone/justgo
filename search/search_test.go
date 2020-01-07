@@ -5,7 +5,6 @@ package search
 //     "github.com/stretchr/testify/assert"
 // )
 
-
 // func TestFuzzyFind(t *testing.T) {
 //     actualMatches := FuzzyFind(
 //       "target",
@@ -41,7 +40,6 @@ package search
 
 //     assert.Equal(t, expectedMatches, actualMatches)
 // }
-
 
 // func TestFuzzyFindPath(t *testing.T) {
 //     actualMatches := FuzzyFindFile(
