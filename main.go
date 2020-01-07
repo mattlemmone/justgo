@@ -38,7 +38,6 @@ func main(){
 
     fmt.Printf("> %s\n", topResult.Exec)
     environment.LaunchApplication(topResult)
-    println("hey")
     break
   }
 }
