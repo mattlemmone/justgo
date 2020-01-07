@@ -15,10 +15,6 @@ func main() {
 
 	println("Scanning...")
 	apps := environment.DesktopApplications()
-
-	for i := range apps {
-		println(apps[i].Name)
-	}
 	// userFiles := environment.UserFiles()
 
 	reader := bufio.NewReader(os.Stdin)
@@ -34,8 +30,6 @@ func main() {
 		}
 
 		topResult := results[0]
-
-		fmt.Printf("> %s\n", topResult.Exec)
 		environment.LaunchApplication(topResult)
 		break
 	}
