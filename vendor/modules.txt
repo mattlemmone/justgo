@@ -1,0 +1,20 @@
+# github.com/davecgh/go-spew v1.1.1
+github.com/davecgh/go-spew/spew
+# github.com/gopherjs/gopherjs v0.0.0-20190411002643-bd77b112433e
+github.com/gopherjs/gopherjs/js
+# github.com/mitchellh/go-homedir v1.1.0
+github.com/mitchellh/go-homedir
+# github.com/pmezard/go-difflib v1.0.0
+github.com/pmezard/go-difflib/difflib
+# github.com/stretchr/testify v1.4.0
+github.com/stretchr/testify/assert
+# github.com/therecipe/qt v0.0.0-20200103041036-2b818d970888
+github.com/therecipe/qt
+github.com/therecipe/qt/core
+github.com/therecipe/qt/gui
+github.com/therecipe/qt/internal/binding/runtime
+github.com/therecipe/qt/network
+github.com/therecipe/qt/qml
+github.com/therecipe/qt/widgets
+# gopkg.in/yaml.v2 v2.2.7
+gopkg.in/yaml.v2

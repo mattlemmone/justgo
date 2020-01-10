@@ -1,3 +1,4 @@
 # Vim
 *.swp
 *.swo
+**/node_modules

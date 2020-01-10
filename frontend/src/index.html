@@ -1,0 +1,31 @@
+<section id="app">
+  <section vcloak id="window">
+    <label id="gt" for="query" class="unselectable">></label>
+    <input 
+           id="query"
+           placeholder=". . ."
+           autofocus 
+           autocomplete="off" 
+           v-model="query" 
+           v-on:input="search"
+           @keydown="navigate"
+    >
+
+    <ul id="searchResults" class="unselectable">
+      <li 
+          v-for="(searchResult, index) in searchResults" 
+          class="searchResult"
+          :class="{ selectedResult: navIdx === index }"
+          v-on:click="selectResult(index)"
+          @mouseover="highlightResult(index)"
+      >
+        <img class="file-icon" src="https://cdn3.iconfinder.com/data/icons/popular-services-brands-vol-2/512/discord-512.png"></img>
+        <div class="file">{{searchResult}}
+          <footer class="filepath">/home/matt/fucku/longlong/solong/farewell/goodbye</footer>
+          </div>
+      </li>
+    </ul>
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"></script>
+  </section>
+</section>

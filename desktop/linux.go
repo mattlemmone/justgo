@@ -15,17 +15,16 @@ const (
 
 type Linux struct{}
 
-func (l *Linux) LaunchApplication(application *Application) {
+func (l *Linux) LaunchApplication(s string) {
 	// replace all occurences of %U (file input) so app launches with no params, and
 	// instead, with the -d(etached) flag
-	sanitized := strings.Replace(application.Exec, "%U", "-d", -1)
+	sanitized := strings.Replace(s, "%U", "-d", -1)
 	args := append([]string{"bash",  "-c"}, sanitized)
 	cmd := exec.Command("nohup", args...)
 	// out, err := cmd.Output()
 
   fmt.Printf("> %s\n", sanitized)
 	// println(string(out))
-
 
 	cmd.Start()
 }
@@ -90,14 +89,6 @@ func (l *Linux) UserFiles() []*File {
 	return files
 }
 
-// desktopApplicationNameFromPath converts a binary ".desktop" filepath to the binary's name
-// e.g.: /usr/share/applications/python3.6.desktop -> python3.6
-func desktopApplicationNameFromPath(path string) string {
-	slashIdx := strings.LastIndex(path, "/")
-	appName := path[slashIdx+1:]
-
-	return strings.TrimSuffix(appName, ".desktop")
-}
 
 func applicationFromDesktopFile(path string) *Application {
 	params := map[string]string{}
@@ -131,6 +122,7 @@ func applicationFromDesktopFile(path string) *Application {
 
 	return &Application{
 		Name:     params["Name"],
+    Path:     path,
 		IconPath: params["Icon"],
 		Exec:     params["Exec"],
 	}
