@@ -8,10 +8,8 @@ import (
 )
 
 
-const (
-	maxFileWalkDepth = 7
-  maxSearchResults = 10
-)
+const maxFileWalkDepth = 7
+
 
 func discoverPaths() []string {
 	var paths []string
@@ -31,7 +29,7 @@ func discoverPaths() []string {
 			}
 
       if !fileInfo.IsDir() {
-        return filepath.SkipDir
+        return nil
       }
 
 			isDotFile := strings.HasPrefix(fileInfo.Name(), ".")

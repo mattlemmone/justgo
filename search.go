@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	// "fmt"
 	"math"
 	"sort"
 	"strings"
@@ -54,7 +54,8 @@ func fuzzyFindFile(target string, paths []string) []string {
 	for i := range rankings {
 		results = append(
 			results,
-			fmt.Sprintf("%s (%v)", rankings[i].Path, rankings[i].Score),
+			// fmt.Sprintf("%s (%v)", rankings[i].Path, rankings[i].Score),
+      rankings[i].Path,
 		)
 	}
 
