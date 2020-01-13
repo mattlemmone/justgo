@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// FileRanking is used to sort different files based on their score assigned in fuzzyFindFile.
 type FileRanking struct {
 	Path  string
 	Score float64
@@ -30,7 +31,7 @@ func fuzzyFindFile(target string, paths []string) []string {
 			continue
 		}
 
-    // todo: dont split, substr
+		// todo: dont split, substr
 		dirs := strings.Split(loweredPath, "/")[1:]
 
 		// add bonus to prefer short paths
@@ -55,7 +56,7 @@ func fuzzyFindFile(target string, paths []string) []string {
 		results = append(
 			results,
 			// fmt.Sprintf("%s (%v)", rankings[i].Path, rankings[i].Score),
-      rankings[i].Path,
+			rankings[i].Path,
 		)
 	}
 

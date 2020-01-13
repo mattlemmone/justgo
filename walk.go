@@ -1,24 +1,22 @@
 package main
 
 import (
-	"os"
 	"fmt"
+	"os"
 	"path/filepath"
 	"strings"
 )
 
-
 const maxFileWalkDepth = 7
-
 
 func discoverPaths() []string {
 	var paths []string
 
-  cwd, err := os.Getwd()
+	cwd, err := os.Getwd()
 
-  if err != nil {
-    fmt.Println(err.Error())
-  }
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 
 	filepath.Walk(
 		cwd,
@@ -28,14 +26,14 @@ func discoverPaths() []string {
 				return err
 			}
 
-      if !fileInfo.IsDir() {
-        return nil
-      }
+			if !fileInfo.IsDir() {
+				return nil
+			}
 
 			isDotFile := strings.HasPrefix(fileInfo.Name(), ".")
 
 			if isDotFile {
-        return filepath.SkipDir
+				return filepath.SkipDir
 			} else if strings.Count(path, "/") > maxFileWalkDepth {
 				return filepath.SkipDir
 			} else {
@@ -48,4 +46,3 @@ func discoverPaths() []string {
 
 	return paths
 }
-

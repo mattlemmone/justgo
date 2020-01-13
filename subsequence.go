@@ -1,7 +1,5 @@
 package main
 
-// import "fmt"
-
 const (
 	// significance of matching subsequence at start
 	initialGapWeight = float64(0.05)
@@ -13,6 +11,7 @@ const (
 	sequenceCoverageWeight = float64(0.35)
 )
 
+// Subsequence determines whether candidate is a subsequence of text.
 func Subsequence(candidate string, text string) bool {
 	candidatePtr := 0
 
@@ -29,6 +28,7 @@ func Subsequence(candidate string, text string) bool {
 	return candidatePtr == len(candidate)
 }
 
+// SubsequenceSimilarity scores a given candidate on how well it aligns with the main criteria for similarity to text.
 func SubsequenceSimilarity(candidate string, text string) float64 {
 	candidatePtr := 0
 	initialGap := -1
