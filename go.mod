@@ -1,6 +1,6 @@
 module github.com/mattlemmone/justgo
 
-go 1.12
+go 1.13
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -11,7 +11,3 @@ require (
 )
 
 replace github.com/mattlemmone/justgo/ => ./
-
-replace github.com/mattlemmone/justgo/desktop => ./desktop/
-
-replace github.com/mattlemmone/justgo/algo => ./algo/
