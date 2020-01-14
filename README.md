@@ -23,7 +23,8 @@ just... go to any directory that best matches the name of your query.
 ```
 
 ## Installation
-Add the following to your $SHELL profile: `source /path/to/jg.sh`.
+1. `go install`
+2. Add the following to your $SHELL profile: `source /path/to/jg.sh`.
 
 ## TODO
 - [ ] cli framework
