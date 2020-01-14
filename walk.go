@@ -45,8 +45,6 @@ func discoverPaths() []string {
         },
     )
 
-    fmt.Println(paths)
-
     return paths
 }
 
