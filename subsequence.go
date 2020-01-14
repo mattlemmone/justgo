@@ -1,5 +1,7 @@
 package main
 
+// import "fmt"
+
 const (
 	// significance of matching subsequence at start
 	initialGapWeight = float64(0.05)
@@ -34,6 +36,10 @@ func SubsequenceSimilarity(candidate string, text string) float64 {
 	initialGap := -1
 	lastCandidate := -1
 	gapLen := 0
+
+	if candidate == "" || text == "" {
+		return 0.0
+	}
 
 	// a b c || b a x b c
 	for i, char := range text {

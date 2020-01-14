@@ -25,23 +25,15 @@ func fuzzyFindFile(target string, paths []string) []string {
 
 	for _, path := range paths {
 		loweredPath := strings.ToLower(path)
+		loweredPath = removeTrailingSlash(loweredPath)
 
 		if !Subsequence(loweredTarget, loweredPath) {
 			continue
 		}
 
-		// todo: dont split, substr
-		dirs := strings.Split(loweredPath, "/")[1:]
-
-		// add bonus to prefer short paths
-		score := directoryBonusNumerator / math.Log(float64(len(dirs)))
-
-		lastFile := dirs[len(dirs)-1]
-		score += SubsequenceSimilarity(loweredTarget, lastFile)
-
 		rankings = append(rankings, FileRanking{
 			Path:  path,
-			Score: score,
+			Score: score(loweredTarget, loweredPath),
 		})
 	}
 
@@ -54,4 +46,23 @@ func fuzzyFindFile(target string, paths []string) []string {
 	}
 
 	return results
+}
+
+func score(target string, path string) float64 {
+	// todo: dont split, substr
+	dirs := strings.Split(path, "/")[1:]
+
+	// add bonus to prefer short paths
+	score := directoryBonusNumerator / math.Log(float64(len(dirs)))
+	lastFile := dirs[len(dirs)-1]
+
+	return score + SubsequenceSimilarity(target, lastFile)
+}
+
+func removeTrailingSlash(s string) string {
+	if s[len(s)-1] == '/' {
+		return s[:len(s)-1]
+	}
+
+	return s
 }

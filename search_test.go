@@ -1,76 +1,70 @@
 package main
 
-// import (
-//     "testing"
-//     "github.com/stretchr/testify/assert"
-// )
+import (
+	"github.com/stretchr/testify/assert"
+	"testing"
+)
 
-// func TestFuzzyFind(t *testing.T) {
-//     actualMatches := FuzzyFind(
-//       "target",
-//       "hey",
-//       "target",
-//       "ticket",
-//       "targets",
-//     )
+func TestFuzzyFindPathMatchingWord(t *testing.T) {
+	actualMatches := fuzzyFindFile(
+		"pictures",
+		[]string{
+			"/home/matt/Documents/Videos/pictures",
+			"/home/matt/Documents/Pictures/",
+			"/home/matt/Documents/Videos/pic",
+			"/home/matt/Documents/Videos/",
+			"/home/matt/Documents/Videos/pictures/pictures",
+		},
+	)
 
-//     expectedMatches := []string {
-//       "target",
-//       "targets",
-//       "ticket",
-//       "hey",
-//     }
+	expectedMatches := []string{
+		"/home/matt/Documents/Pictures/",
+		"/home/matt/Documents/Videos/pictures",
+		"/home/matt/Documents/Videos/pictures/pictures",
+	}
 
-//     assert.Equal(t, expectedMatches, actualMatches)
-// }
+	assert.Equal(t, expectedMatches, actualMatches)
+}
 
-// func TestFuzzyFindApplication(t *testing.T) {
-//     actualMatches := FuzzyFind(
-//       "Firefox",
-//       "Thunderbird",
-//       "Discord",
-//       "Alacritty",
-//     )
+func TestFuzzyFindPathMatchingWordPrefix(t *testing.T) {
+	actualMatches := fuzzyFindFile(
+		"pic",
+		[]string{
+			"/home/matt/Documents/Videos/pictures",
+			"/home/matt/Documents/Pictures/",
+			"/home/matt/Documents/Videos/pic",
+			"/home/matt/Documents/Videos/",
+			"/home/matt/Documents/Videos/pictures/pictures",
+		},
+	)
 
-//     expectedMatches := []string {
-//       "Discord",
-//       "Alacritty",
-//       "Thunderbird",
-//     }
+	expectedMatches := []string{
+		"/home/matt/Documents/Videos/pic",
+		"/home/matt/Documents/Pictures/",
+		"/home/matt/Documents/Videos/pictures",
+		"/home/matt/Documents/Videos/pictures/pictures",
+	}
 
-//     assert.Equal(t, expectedMatches, actualMatches)
-// }
+	assert.Equal(t, expectedMatches, actualMatches)
+}
 
-// func TestFuzzyFindPath(t *testing.T) {
-//     actualMatches := FuzzyFindFile(
-//       "pictures",
-//       "/home/matt/Documents/Pictures/",
-//       "/home/matt/Pictures/Screenshot from 2020-01-01 17-56-09.png",
-//       "/home/matt/Documents/Videos/",
-//     )
+func TestFuzzyFindPathMatchingWordSuffix(t *testing.T) {
+	actualMatches := fuzzyFindFile(
+		"tures",
+		[]string{
+			"/home/matt/Documents/Videos/pictures",
+			"/home/matt/Documents/Pictures/",
+			"/home/matt/Documents/Videos/pic",
+			"/home/matt/Documents/Videos/",
+			"/home/matt/Documents/Videos/pictures/pictures",
+		},
+	)
 
-//     expectedMatches := []string {
-//       "/home/matt/Pictures/Screenshot from 2020-01-01 17-56-09.png",
-//       "/home/matt/Documents/Pictures/",
-//       "/home/matt/Documents/Videos/",
-//     }
+	expectedMatches := []string{
+		"/home/matt/Documents/Pictures/",
+		"/home/matt/Documents/Videos/pictures",
+		"/home/matt/Documents/Videos/pictures/pictures",
+	}
 
-//     assert.Equal(t, expectedMatches, actualMatches)
-// }
-
-// func TestFuzzyFindFilePrefix(t *testing.T) {
-//     actualMatches := FuzzyFindFile(
-//       "home",
-//       "/home/matt/Documents/Pictures/",
-//       "/home/matt/Pictures/Screenshot from 2020-01-01 17-56-09.png",
-//       "/home/matt/Documents/Videos/",
-//     )
-
-//     expectedMatches := []string {
-//       "/home/matt/Documents/Videos/",
-//       "/home/matt/Documents/Pictures/",
-//       "/home/matt/Pictures/Screenshot from 2020-01-01 17-56-09.png",
-//     }
-
-//     assert.Equal(t, expectedMatches, actualMatches)
-// }
+	assert.Equal(t, expectedMatches, actualMatches)
+}
