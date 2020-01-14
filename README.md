@@ -2,6 +2,7 @@
 [![BCH compliance](https://bettercodehub.com/edge/badge/mattlemmone/justgo?branch=master)](https://bettercodehub.com/)
 [![CodeFactor](https://www.codefactor.io/repository/github/mattlemmone/justgo/badge)](https://www.codefactor.io/repository/github/mattlemmone/justgo)
 [![Go Report Card](https://goreportcard.com/badge/github.com/mattlemmone/justgo)](https://goreportcard.com/report/github.com/mattlemmone/justgo)
+[![CircleCI](https://circleci.com/gh/mattlemmone/justgo.svg?style=svg)](https://circleci.com/gh/mattlemmone/justgo)
 
 just... go to any directory that best matches the name of your query.
 
