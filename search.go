@@ -1,7 +1,6 @@
 package main
 
 import (
-	// "fmt"
 	"math"
 	"sort"
 	"strings"
@@ -15,7 +14,7 @@ type FileRanking struct {
 
 const (
 	// lower number means longer directories will be penalized less
-	directoryBonusNumberator = 0.7
+	directoryBonusNumerator = 0.7
 )
 
 func fuzzyFindFile(target string, paths []string) []string {
@@ -35,17 +34,15 @@ func fuzzyFindFile(target string, paths []string) []string {
 		dirs := strings.Split(loweredPath, "/")[1:]
 
 		// add bonus to prefer short paths
-		score := directoryBonusNumberator / math.Log(float64(len(dirs)))
+		score := directoryBonusNumerator / math.Log(float64(len(dirs)))
 
 		lastFile := dirs[len(dirs)-1]
 		score += SubsequenceSimilarity(loweredTarget, lastFile)
 
-		ranking := FileRanking{
+		rankings = append(rankings, FileRanking{
 			Path:  path,
 			Score: score,
-		}
-
-		rankings = append(rankings, ranking)
+		})
 	}
 
 	sort.Slice(rankings, func(i, j int) bool {
@@ -53,11 +50,7 @@ func fuzzyFindFile(target string, paths []string) []string {
 	})
 
 	for i := range rankings {
-		results = append(
-			results,
-			// fmt.Sprintf("%s (%v)", rankings[i].Path, rankings[i].Score),
-			rankings[i].Path,
-		)
+		results = append(results, rankings[i].Path)
 	}
 
 	return results
