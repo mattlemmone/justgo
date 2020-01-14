@@ -1,5 +1,7 @@
 #!/bin/bash
 
 jg(){
-  cd $(justgo "$1")
+  results=$(justgo "$1")
+  echo $results
+  cd $(justgo "$results")
 }
